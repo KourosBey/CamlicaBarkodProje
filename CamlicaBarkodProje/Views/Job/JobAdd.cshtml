@@ -1,0 +1,221 @@
+﻿@using EntityLayer.Concrete
+
+@model Job
+
+
+@{
+    ViewData["Title"] = "JobAdd";
+    
+}
+@section scripts{
+ <script>
+//$(document).ready(function() {
+//    $("#myBtn").click(function() {
+//        $("#myModal").modal("show");
+//    });
+//});
+
+
+ $(function () {
+        $('#btnSave').click(function () {
+            $('#modal-container').modal('hide');
+        });
+    });
+     $(function () {
+    $('body').on('click', 'modal-link', function (e) {
+        e.preventDefault();
+        $(this).attr('data-target', '#modal-container');
+        $(this).attr('data-toggle', 'modal');
+    });
+
+    $('body').on('click', 'modal-close-btn', function() {
+        $('modal-container').modal('hide');
+    });
+
+    $('#modal-container').on('hidden.bs.modal', function(){
+        $(this).removeData('bs.modal');
+    });
+});
+</script>
+}
+<h1>JobCreate</h1>
+@*
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Insert</button>
+
+
+   <form asp-action="JobAdd" asp-controller="Job" method="post">
+       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Customer Details Form</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="JobDescription" class="control-label"></label>
+                <input asp-for="JobDescription" class="form-control" />
+                <span asp-validation-for="JobDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solution" class="control-label"></label>
+                <input asp-for="Solution" class="form-control" />
+                <span asp-validation-for="Solution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentStatus" class="control-label"></label>
+                <input asp-for="CurrentStatus" class="form-control" />
+                <span asp-validation-for="CurrentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Emergency" /> @Html.DisplayNameFor(model => model.Emergency)
+                </label>
+            </div>
+          
+            <div class="form-group">
+              <select asp-for="LogCallID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cv">
+               
+                </select>
+                
+                
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+    </form>
+
+*@@*
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Modal Header</h4>
+  </div>
+  <div class="modal-body">
+    @Html.PartialAsync("JobAdd")
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  </div>
+</div>
+</div>
+</div>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+*@
+
+@*
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="JobAdd" asp-controller="Job" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="JobDescription" class="control-label"></label>
+                <input asp-for="JobDescription" class="form-control" />
+                <span asp-validation-for="JobDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solution" class="control-label"></label>
+                <input asp-for="Solution" class="form-control" />
+                <span asp-validation-for="Solution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentStatus" class="control-label"></label>
+                <input asp-for="CurrentStatus" class="form-control" />
+                <span asp-validation-for="CurrentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Emergency" /> @Html.DisplayNameFor(model => model.Emergency)
+                </label>
+            </div>
+          
+            <div class="form-group">
+              <select asp-for="LogCallID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cv">
+               
+                </select>
+                
+                
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+*@
+
+
+          <form asp-action="JobAdd" asp-controller="Job" method="post">
+        <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Modal Header</h4>
+  </div>
+  <div class="modal-body">
+                       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="JobDescription" class="control-label"></label>
+                <input asp-for="JobDescription" class="form-control" />
+                <span asp-validation-for="JobDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solution" class="control-label"></label>
+                <input asp-for="Solution" class="form-control" />
+                <span asp-validation-for="Solution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentStatus" class="control-label"></label>
+                <input asp-for="CurrentStatus" class="form-control" />
+                <span asp-validation-for="CurrentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Emergency" /> @Html.TextBoxFor(model => model.Emergency)
+                </label>
+            </div>
+          
+            <div class="form-group">
+              <select asp-for="LogCallID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cv">
+               
+                </select>
+                
+                
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </form>

@@ -1,0 +1,52 @@
+﻿@using EntityLayer.Concrete
+@model List<Authority>
+
+
+
+@{
+    ViewData["Title"] = "IndexBoss";
+}
+
+<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+  <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Worker Name</th>
+                <th>Number</th>
+                <th>Email</th>
+                <th>Position</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+
+@foreach (var urun in Model ){
+    <tr>
+        <th>
+            @urun.Worker.WorkerID
+        </th>
+        <td>
+            @urun.Worker.WorkerName
+        </td>
+        <td>
+            @urun.Worker.Number
+        </td>
+        <td>
+            @urun.Worker.Email
+        </td>
+        <td>
+            @urun.AuthorityName
+        </td>
+       
+
+    </tr>
+
+
+}
+
+    </tbody>
+
+
+</table>

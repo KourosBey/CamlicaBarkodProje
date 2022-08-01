@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+ 
+}
+
+
+<h1>Job</h1>
+<form asp-action="Index" asp-controller="Job" method="get">
+
+ <table>
+     <tr>
+     <td>
+ İş ID : <input type="text" name="JobID" placeholder="İş Numarasını Yazınız"/> </td><td>
+ Müşteri ID : <input type="text" name="CustomerID" placeholder="Müşteri İsmini Yazınız"/></td><td>
+ İş Açıklaması :<input type="text" name="JobDescription" placeholder="İş açıklamasını yazınız "/></td>
+ </tr>
+ <tr>
+     <td>
+ Çözüm : <input type="text" name="Solution" placeholder="Çözümü buraya yazınız" height="100" width="100"/></td><td>
+ Çağrı Numarası : <input type="text" name="CallLogID" placeholder="Çağrı Numarasını yazınız"/></td><td>
+ Anlık Durum : <input type="text" name="CurrentStatus" placeholder="Anlık ne durumda olduğunuzu buraya yazınız"/></td>
+ </tr>
+
+ <tr><td>
+<input type="checkbox" name="Emergency"/></>Acil mi?</td>
+<td>
+<input type="submit" name="Ara" value="Arama Yap" width="50" height="100"/></td>
+</tr>
+</table>
+
+
+</form>

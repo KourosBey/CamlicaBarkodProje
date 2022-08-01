@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CS8604: Olası null başvuru bağımsız değişkeni.
+dotnet_diagnostic.CS8604.severity = none
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = none

@@ -1,0 +1,55 @@
+﻿@model EntityLayer.Concrete.Job
+
+<h4>Job</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Save">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="JobID" />
+            <div class="form-group">
+                <label asp-for="JobDescription" class="control-label"></label>
+                <input asp-for="JobDescription" class="form-control" />
+                <span asp-validation-for="JobDescription" class="text-danger" ></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solution" class="control-label"></label>
+                <input asp-for="Solution" class="form-control" />
+                <span asp-validation-for="Solution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentStatus" class="control-label"></label>
+                <input asp-for="CurrentStatus" class="form-control" />
+                <span asp-validation-for="CurrentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Emergency" /> @Html.DisplayNameFor(model => model.Emergency)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDay" class="control-label"></label>
+                <input asp-for="CreatedDay" class="form-control" />
+                <span asp-validation-for="CreatedDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedDay" class="control-label"></label>
+                <input asp-for="UpdatedDay" class="form-control" />
+                <span asp-validation-for="UpdatedDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogCallID" class="control-label"></label>
+                <input asp-for="LogCallID" class="form-control" />
+                <span asp-validation-for="LogCallID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

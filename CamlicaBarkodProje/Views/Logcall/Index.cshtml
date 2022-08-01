@@ -1,0 +1,273 @@
+﻿@using EntityLayer.Concrete
+@model IEnumerable<LogCall>
+@addTagHelper *, AuthoringTagHelpers
+
+
+@{
+    ViewData["Title"] = "Index";
+    
+}
+
+
+@*Scripts*@
+@*<br><a href="Logcall/LogsAdd" class="btn btn-primary">YeniÇağrı</a>*@
+@*
+<table class="table table-bordered" id="logCalls">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CallInfo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateCallTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>*@
+
+<a href="#myModal" class="btn btn-lg btn-primary" data-bs-toggle="modal">Yeni Kayıt Ekle</a>
+
+<div class="card mb-4 mt-2">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Gelen Çağrılar
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="LogCall" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="display:none">LogCallID</th>
+                        <th>
+                            WorkerName
+                        </th>
+                        <th>
+                            CallInfo
+                        </th>
+                        <th>
+                            CreateCallTime
+                        </th>
+                        <th>
+                            CustomerName
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none">
+                                @Html.DisplayFor(modelItem=>item.LogCallID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Worker!.WorkerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CallInfo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateCallTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Customer!.CustomerName)
+                            </td>
+
+                            <td>
+                                <a href="/Logcall/DeleteLog/@item.LogCallID" id='deleteRecord' class="btn btn-primary">X</a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@*-------------------------------------MODALS---------------------------------*@
+
+
+<div id="getJsonCustomer" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Customer Create</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="CustomerAdd" asp-controller="Logcall" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label name="CustomerName" class="control-label">Customer Name</label>
+                                <input name="CustomerName" class="form-control" />
+
+                            </div>
+                            <div class="form-group">
+                                <label name="CustomerAdress" class="control-label">Customer Adress </label>
+                                <input name="CustomerAdress" class="form-control" />
+
+                            </div>
+                            <div class="form-group">
+                                <label name="CustomerNumber" class="control-label">Customer Number</label>
+                                <input name="CustomerNumber" class="form-control" />
+
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="LogsAdd" asp-controller="LogCall" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label id="CallInfo" class="control-label">CallInfo</label>
+                                <input id="CallInfo" class="form-control" />
+                                <span id="CallInfo" class="text-danger"></span>
+                            </div>
+                            <br />
+                            <div class="form-group">
+
+                                <input class="form-check-input" name="isJob" type="checkbox" value="true" /> İş mi?
+                                <span id="IsJob" class="text-danger"></span>
+                            </div>
+                            <br />
+
+                            <div class="form-group">
+                                <select id="WorkerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.wr">
+                                </select>
+
+
+
+                            </div>
+                            <br />
+                            <div style="display: flex; ">
+                                <div class="form-group">
+                                    <select id="CustomerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cr">
+                                    </select>
+
+
+                                </div>
+                                <a href="#getJsonCustomer" id="getJsonCustomerBtn" class="btn btn-lg btn-primary" data-bs-toggle="modal">+</a>
+                            </div>
+
+                            <label> Müşteriyi bulamadıysanız " + " tuşuna basınız </label>
+
+
+
+                            <br />
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+
+    $(document).ready(function() {
+
+        $("#getJsonCustomerBtn").mousedown(function() {
+            $("#myModal").modal("hide");
+            $("#getJsonCustomer").modal("show");
+        });
+
+
+
+        var table = $('#LogCall').DataTable({
+
+
+            select: {
+                style: 'single'
+            },
+
+        });
+
+        table.on('click', 'tr', function(e, dt, type, indexes) {
+            if ($(this).hasClass('selected')) {
+                var selecteData = table.row(this).data();
+                let selectDataId = selecteData[0];
+
+                $.ajax({
+                    contentType: "application/json",
+                    dataType: "json",
+                    type: "Get",
+                    url: "Logcall/GetLogcallsJson/",
+                    data: { id: selectDataId },
+                    success: function(func) {
+                        alert("veri degisimi yapıldı");
+                    }
+                })
+                // Duruma göre yazılacak AJAX  isteği örneği
+
+
+                $(this).removeClass('selected');
+
+
+            } else {
+
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+            }
+
+
+
+        });
+
+        $("#logCallDetail").mousedown("show");
+
+
+    });
+
+
+
+
+
+
+
+</script>

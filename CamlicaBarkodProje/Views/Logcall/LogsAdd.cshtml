@@ -1,0 +1,140 @@
+﻿
+@using EntityLayer.Concrete
+
+@model LogCall
+
+
+@{
+    ViewData["Title"] = "LogsAdd";
+    
+}
+
+<h1>Call Add</h1>
+
+
+@section scripts{
+ <script>
+$(document).ready(function() {
+    $("#myBtn").click(function() {
+        $("#myModal").modal("show");
+    });
+});
+</script>
+   ,
+
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="LogsAdd" asp-controller="LogCall" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CallInfo" class="control-label">CallInfo</label>
+                <input asp-for="CallInfo" class="form-control" />
+                <span asp-validation-for="CallInfo" class="text-danger"></span>
+            </div>
+          <br />
+            <div class="form-group">
+                
+                <input  asp-for="IsJob" class="form-check-input" /> İş mi?
+                <span asp-validation-for="IsJob" class="text-danger"></span>
+            </div>
+           <br />
+            
+            <div class="form-group">
+              <select asp-for="WorkerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.wr">
+               
+                </select>
+                
+                
+                
+            </div>
+          <br />
+          <div  style="display: flex; ">
+            <div class="form-group">
+            <select asp-for="CustomerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cr">
+               </select>
+         
+            
+                    </div>
+                      <button type="button" class="btn btn-primary" asp-action="CustomerAdd" asp-controller="Customer" >+ </button>
+                 </div>    
+   
+           <label > Müşteriyi bulamadıysanız " + " tuşuna basınız </label>    
+                
+           
+          
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-action="Index">Back to List</a>
+
+
+</div>
+
+<a href="#myModal" class="btn btn-lg btn-primary" data-bs-toggle="modal">Launch Demo Modal</a>
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+               
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="JobAdd" asp-controller="Job" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label name="JobDescription" class="control-label"></label>
+                <input name="JobDescription" class="form-control" />
+                
+            </div>
+            <div class="form-group">
+                <label name="Solution" class="control-label"></label>
+                <input name="Solution" class="form-control" />
+                
+            </div>
+            <div class="form-group">
+                <label name="CurrentStatus" class="control-label"></label>
+                <input name="CurrentStatus" class="form-control" />
+               
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" name="Emergency" /> Acil Mi?
+                </label>
+            </div>
+          
+            <div class="form-group">
+              <select asp-for="LogCallID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cv">
+               
+                </select>
+                
+                
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
