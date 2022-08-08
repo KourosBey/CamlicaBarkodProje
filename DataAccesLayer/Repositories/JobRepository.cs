@@ -15,9 +15,11 @@ namespace DataAccesLayer.Repositories
         readonly Context c = new();
         public void AddJobs(Job job)
         {
-            using var c = new Context();
-            c.Add(job);
-            c.SaveChanges();
+            using (var c = new Context())
+            {
+                c.Add(job);
+                c.SaveChanges();
+            }
         }
 
         public void Delete(Job t)
@@ -43,27 +45,30 @@ namespace DataAccesLayer.Repositories
 
         public List<Job> GetListAll()
         {
-            using var c = new Context();
-            return c.Jobs.ToList();
+            using (var c = new Context())
+            {
+                return c.Jobs.ToList();
+            }
         }
 
-    
+
         public void Insert(Job t)
         {
             throw new NotImplementedException();
         }
 
-        
+
 
         public void Update(Job t)
         {
-            using var c = new Context();
-            c.Update(t);
-            c.SaveChanges();
+            using (var c = new Context())
+            {
+                c.Update(t);
+                c.SaveChanges();
+            }
         }
-        
-        
 
-      
+
+
     }
 }

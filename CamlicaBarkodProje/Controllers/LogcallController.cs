@@ -37,7 +37,7 @@ namespace CamlicaBarkodProje.Controllers
                                                       Text = x.CustomerName,
                                                       Value = x.CustomerID.ToString()
                                                   }).ToList();
-            ViewBag.wr = WorkerToLog;
+            ViewBag.work = WorkerToLog;
             ViewBag.cr = CustomerToLog;
 
             return View(logcalls);
@@ -76,20 +76,20 @@ namespace CamlicaBarkodProje.Controllers
         [HttpPost]
         public IActionResult LogsAdd(LogCall l)
         {
-
-            l.CreateCallTime = DateTime.Now;
-            lcm.AddLogCall(l);
+            var logNew = l;
+            logNew.CreateCallTime = DateTime.Now;
+            lcm.AddLogCall(logNew);
 
             return RedirectToAction("Index", "LogCall");
 
         }
-        [HttpPost]
-        public IActionResult SaveLogs(LogCall l)
+       
+        public IActionResult SaveLogs(LogCall Logcall)
         {
-
-            var newJob = lcm.GetById(l.LogCallID);
-            newJob.CallInfo = l.CallInfo;
-            var w = JsonConvert.SerializeObject(l);
+            
+            var newJob = lcm.GetById(Logcall.LogCallID);
+            newJob.CallInfo = Logcall.CallInfo;
+            var w = JsonConvert.SerializeObject(Logcall);
             lcm.UpdateLogCall(newJob);
             return RedirectToAction("Index", "Job");
         }

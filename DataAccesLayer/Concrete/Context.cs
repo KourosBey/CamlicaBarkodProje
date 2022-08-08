@@ -1,5 +1,6 @@
 ﻿using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace DataAccesLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.UseLoggerFactory(LoggerFactory.Create(x => x.AddConsole().AddDebug())); // konsola sql sorgusunu bastırma optionsBuilder'ı
             optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB; database=CamlicaBarkodCallCenterDBY;integrated security=true");
         }
         public DbSet<Authority>? Authority { get; set; }

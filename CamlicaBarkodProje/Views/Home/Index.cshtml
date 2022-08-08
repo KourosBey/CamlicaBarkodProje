@@ -3,128 +3,279 @@
 }
 @using EntityLayer.Concrete
 @using EntityLayer.SharedModels
-@model List<Job>  
+@model List<Job>
 @{
-  
 
 
+    List<WorkerStatus> workertarihli = ViewBag.tarihliVerideneme;
+    List<WorkerStatus> workerStatus = ViewBag.succesWorkerName;
     List<JobPoint> deneme = ViewBag.wPoints;
-    
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(deneme.Select(x=>x.Worker).ToList() );  
-    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject( deneme.Select(y=>y.point ).ToList() );  
-   
-}  
-  
-<!DOCTYPE html>  
-  
-<html>  
-<head>  
-    <meta name="viewport" content="width=device-width" />  
-    <title>Pie</title>  
-</head>  
-<body>  
+    List<LogCall> logz = ViewBag.dates;
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(workertarihli.Select(x => x.workerName).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(workertarihli.Select(y => y.logCount).ToList());
+    var XWorkerName = Newtonsoft.Json.JsonConvert.SerializeObject(workertarihli.Select(z => z.workerName).ToList());
+    var YPoints = Newtonsoft.Json.JsonConvert.SerializeObject(workertarihli.Select(v => v.succesLog).ToList());
+    //var workers =Newtonsoft.Json.JsonConvert.SerializeObject().ToList();
+            //var workerCalls =null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+
+
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Stats</title>
+</head>
+<body>
+    <form name="tarih" asp-action="Index" method="post">
+    <select id="tarihString" name="tarihString" onchange="this.form.submit()" }>
+
+        <option value="0">Tümü</option>
+        <option value="1">Gün</option>
+        <option value="2">Ay</option>
+        <option value="3">Yıl</option>
+    </select>
+    </form>
+
 
     <div class="text-center">
-    <h1 class="display-4">Genel Verimlilik</h1>
-    
-</div>
+        <h1 class="display-4">Genel Verimlilik</h1>
 
-    <div class="box-body">  
-  
-        <div class="chart-container">  
-            <canvas id="chart" style=" width:50px; height:200px"></canvas>  
-        </div>  
-    </div>  
-</body>  
+    </div>
+
+    <div class="box-body">
+
+        <div class="chart-container">
+            <canvas id="chart" style=" width:50px; height:200px"></canvas>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <h1 class="display-4">Çözülen İş Sayısı</h1>
+
+    </div>
+
+    <div class="box-body">
+        <div class="persoverimlilik">
+            <canvas id="persoverimlilik" style="width:300px; height:300px"></canvas>
+
+        </div>
+
+    </div>
 
 
+
+
+
+    @*
+    <table>
+
+
+    @foreach (var items in logz)
+    {
+    <tr>
+    <td>
+    @items.Worker!.WorkerName
+    </td>
+    <td>
+    @items.CreateCallTime
+    </td>
+    <td>
+    @items.IsJob
+    </td>
+    <td>
+    @items.Customer!.CustomerName
+    </td>
+    </tr>
+    }
+
+
+
+    </table>*@
+</body>
+
+</html>
 @section scripts{
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-<script type="text/javascript">  
-
-
+    <script type="text/javascript">
 
 
 
-        $(function () {  
-    var chartName = "chart";  
-        var ctx = document.getElementById(chartName).getContext('2d');  
-        var data = {  
-                labels: @Html.Raw(XLabels),  
-                datasets: [{  
-                    label: "Çözülen İşler Tablosu ( Genel )",  
-                    backgroundColor: [  
-                        'rgba(255, 99, 132, 0.2)',  
-                        'rgba(54, 162, 235, 0.2)',  
-                        'rgba(255, 206, 86, 0.2)',  
-                        'rgba(75, 192, 192, 0.2)',  
-                        'rgba(153, 102, 255, 0.2)',  
-                        'rgba(255, 159, 64, 0.2)',  
-                        'rgba(255, 0, 0)',  
-                        'rgba(0, 255, 0)',  
-                        'rgba(0, 0, 255)',  
-                        'rgba(192, 192, 192)',  
-                        'rgba(255, 255, 0)',  
-                        'rgba(255, 0, 255)'  
-                    ],  
-                    borderColor: [  
-                        'rgba(255,99,132,1)',  
-                        'rgba(54, 162, 235, 1)',  
-                        'rgba(255, 206, 86, 1)',  
-                        'rgba(75, 192, 192, 1)',  
-                        'rgba(153, 102, 255, 1)',  
-                        'rgba(255, 159, 64, 1)',  
-                        'rgba(255, 0, 0)',  
-                        'rgba(0, 255, 0)',  
-                        'rgba(0, 0, 255)',  
-                        'rgba(192, 192, 192)',  
-                        'rgba(255, 255, 0)',  
-                        'rgba(255, 0, 255)'  
-                    ],  
-                    borderWidth: 1,  
-                    data: @Html.Raw(YValues)  
-    }]  
-            };  
-  
-var options = {  
-                maintainAspectRatio: false,  
-                scales: {  
-                    yAxes: [{  
-                        ticks: {  
-                            min: 0,  
-                            beginAtZero: true  
-                        },  
-                        gridLines: {  
-                            display: true,  
-                            color: "rgba(255,99,164,0.2)"  
-                        }  
-}],  
-                    xAxes: [{  
-                        ticks: {  
-                            min: 0,  
-                            beginAtZero: true  
-                        },  
-                        gridLines: {  
-                            display: false  
-                        }  
-                    }]  
-                }  
-            };  
-  
-       var myChart = new  Chart(ctx, {  
-                options: options,  
-                data: data,  
-                type:"bar"  ,
-  
-            });  
-        });  
+
+        $(function() {
+
+            var chartName = "chart";
+            var ctx = document.getElementById(chartName).getContext('2d');
+            var data = {
+        labels: @Html.Raw(XLabels),
+        datasets: [{
+        labels: [@Html.Raw(XLabels)],
+        
+        backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+                            }]
+            };
+
+            var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                            
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+            var myChart = new Chart(ctx, {
+                options: options,
+                data: data,
+                type: "bar",
+
+            });
+        });
 
 
-   
 
-</script>  
-}
+
+    </script>  @*Genel Verimlilik Tablosu*@
+
+    <script type="text/javascript">
+        $(function() {
+            var personelVerimliligi = "persoverimlilik";
+            var ctx = document.getElementById(personelVerimliligi).getContext('2d');
+            var data = {
+               
+                labels: @Html.Raw(XWorkerName),
+                datasets: [{
+                    
+                    labels:@Html.Raw(XWorkerName),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YPoints)
+                    
+                            }]
+            };
+
+            var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                            
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+                    }],
+                    xAxes: [{
+                        
+                        ticks: {
+                            tickLength: 5,
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+            var personelVerimliligi = new Chart(ctx, {
+                options: options,
+                data: data,
+                type: "bar",
+
+            });
+        });
+
+
+
+
+    </script>  @*Seçilen kullanıcı tablosu*@
+
+    }
+
 
 

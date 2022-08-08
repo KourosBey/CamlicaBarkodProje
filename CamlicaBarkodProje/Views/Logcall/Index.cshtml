@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    
+
 }
 
 
@@ -97,6 +97,46 @@
 
 @*-------------------------------------MODALS---------------------------------*@
 
+<div id="modalClick" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <div id="clickedItem">
+                </div>
+
+                <input id="LogCallID" style="display:none" type="text" />
+                <form asp-action="SaveLogs" asp-controller="Logcall" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label name="CallInfo" class="control-label">Çağrı Bilgisi</label>
+                        <input id="CallInfo" name="CallInfo" class="form-control" />
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="submitButton" name="submitButton" class="btn btn-primary">Edit</button>
+
+                    </div>
+                </form>
+
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="getJsonCustomer" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
@@ -112,17 +152,17 @@
                         <form asp-action="CustomerAdd" asp-controller="Logcall" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                <label name="CustomerName" class="control-label">Customer Name</label>
+                                <label name="CustomerName" class="control-label">Müşteri Adı</label>
                                 <input name="CustomerName" class="form-control" />
 
                             </div>
                             <div class="form-group">
-                                <label name="CustomerAdress" class="control-label">Customer Adress </label>
+                                <label name="CustomerAdress" class="control-label">Müşteri Adres </label>
                                 <input name="CustomerAdress" class="form-control" />
 
                             </div>
                             <div class="form-group">
-                                <label name="CustomerNumber" class="control-label">Customer Number</label>
+                                <label name="CustomerNumber" class="control-label">Müşteri Numarası</label>
                                 <input name="CustomerNumber" class="form-control" />
 
                             </div>
@@ -153,32 +193,35 @@
 
                 <div class="row">
                     <div class="col-md-4">
-                        <form asp-action="LogsAdd" asp-controller="LogCall" method="post">
+                        <form name="logCall" asp-action="LogsAdd" asp-controller="LogCall" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label id="CallInfo" class="control-label">CallInfo</label>
-                                <input id="CallInfo" class="form-control" />
-                                <span id="CallInfo" class="text-danger"></span>
-                            </div>
-                            <br />
-                            <div class="form-group">
-
-                                <input class="form-check-input" name="isJob" type="checkbox" value="true" /> İş mi?
-                                <span id="IsJob" class="text-danger"></span>
-                            </div>
-                            <br />
 
                             <div class="form-group">
-                                <select id="WorkerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.wr">
+                                <label id="CallInfo" name="CallInfo" class="control-label">Çağrı Bilgisi</label>
+                                <input id="CallInfo" name="CallInfo" class="form-control" />
+
+                            </div>
+                            <br />
+                            @* <div class="form-group">
+
+                            <input class="form-check-input" name="isJob" type="checkbox" value="true" /> İş mi?
+                            <span id="IsJob" class="text-danger"></span>
+                            </div>
+                            <br />*@
+                            <div class="form-group form-check">
+                                <label class="form-check-label">  </label>
+                                @*   <input class="form-check-input" name="Emergency" /> *@
+                                <input class="form-check-input" name="IsJob" type="checkbox" value="true" /> İş mi?
+
+                            </div>
+                            <div class="form-group">
+                                <select id="WorkerID" name="WorkerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.work">
                                 </select>
-
-
-
                             </div>
                             <br />
                             <div style="display: flex; ">
                                 <div class="form-group">
-                                    <select id="CustomerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cr">
+                                    <select id="CustomerID" name="CustomerID" class="form-control form-control-lg" asp-items="(List<SelectListItem>)ViewBag.cr">
                                     </select>
 
 
@@ -190,9 +233,9 @@
 
 
 
-                            <br />
+
                             <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                                <input id="createLog" type="submit" value="createLog" class="btn btn-primary">
                             </div>
                         </form>
                     </div>
@@ -205,6 +248,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 <script>
 
 
@@ -239,9 +286,14 @@
                     url: "Logcall/GetLogcallsJson/",
                     data: { id: selectDataId },
                     success: function(func) {
-                        alert("veri degisimi yapıldı");
+                        var datam = jQuery.parseJSON(func);
+                        $("#modalClick").modal("show");
+                        $("#LogCallID").val(datam.LogCallID)
+                        $("#CallInfo").val(datam.CallInfo);
+
+                        console.log(func)
                     }
-                })
+                });
                 // Duruma göre yazılacak AJAX  isteği örneği
 
 
@@ -260,13 +312,57 @@
         });
 
         $("#logCallDetail").mousedown("show");
+        $("#submitButton").click(function() {
 
+            var newLog = {
+                LogCallID: $("#LogCallID").val(),
+                CallInfo: $("#CallInfo").val(),
+
+            };
+            $.ajax({
+                type: "Post",
+                url: 'Logcall/SaveLogs/',
+                data: newLog,
+                success: function(funk) {
+                    $("#modalClick").modal("hide");
+                }
+            });
+        }) // Update Doubleclick Logcall
 
     });
 
 
 
 
+            //$("#createLog").click(function() {
+            //    var datam =  {
+            //        CallInfo: $("#CallInfo").val(),
+            //        CustomerID: $("#CustomerID").val(),
+            //        WorkerID: $("#WorkerID").val(),
+            //        IsJob: $("#IsJob").val(),
+
+            //    };
+            //    $.ajax({
+            //        contentType: "application/json",
+            //        method: "Post",
+            //        type: "json",
+            //        url: "Logcall/LogsAdd/",
+            //        data: datam,
+            //        success: function() {
+            //            console.log(data);
+            //            $("#myModal").modal("hide");
+
+            //        },
+            //        error: function(e) {
+
+            //            console.log(e);
+            //        }
+
+            //    });
+
+
+
+            //})
 
 
 

@@ -94,5 +94,12 @@ namespace CamlicaBarkodProje.Controllers
             }
             return RedirectToAction("Index","Login");
         }
+   
+        public IActionResult Logout()
+        {
+
+            var logout =  HttpContext.SignOutAsync();
+            return RedirectToAction("Index");
+        }
     }
 }

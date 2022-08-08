@@ -5,42 +5,63 @@ using DataAccesLayer.EntityFramework;
 using EntityLayer.SharedModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using ef6 = System.Data.Entity;
 
 namespace CamlicaBarkodProje.Controllers
 {
-   
+
 
     public class HomeController : Controller
     {
-       
+
 
 
         private readonly ILogger<HomeController> _logger;
         LogCallManager lcm = new LogCallManager(new EFLogCallRepository());
         JobManager jm = new JobManager(new EFJobsRepository());
         WorkerManager wm = new WorkerManager(new EFWorkerRepository());
-        
+        CustomManager custom = new CustomManager();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
         [Authorize(Roles = "Yönetici")]
-        public IActionResult Index()
+
+
+
+        public IActionResult Index(string tarihString)
         {
             List<int> addWorkerID = new List<int>();
-            var values = jm.JobInclude().ToList();
-            var workeres = wm.GetList();
-            List<JobPoint> wPoint = new List<JobPoint>();
-            var perfectSQL = jm.SqlSorgusuJobPoint();
+
+            List<SelectListItem> slcList = new List<SelectListItem>();
+            slcList.Add(new SelectListItem { Value = "0", Text = "Tümü" });
+            slcList.Add(new SelectListItem { Value = "1", Text = "Gün" });
+            slcList.Add(new SelectListItem { Value = "2", Text = "Ay" });
+            slcList.Add(new SelectListItem { Value = "3", Text = "Yıl" });
 
 
-            ViewBag.wPoints = perfectSQL;
+
+
+
+            if (tarihString == "" || tarihString == null) { tarihString = "Default"; }
+
+            var tarihliVerideneme = custom.workerStatusWithDate(tarihString);
 
 
 
 
-            return View(values);
+            ViewBag.tarihliVerideneme = tarihliVerideneme;
+            ViewBag.dayNight = slcList;
+
+
+
+
+
+
+
+            return View();
         }
         [Authorize(Roles = "Yönetici")]
         public IActionResult Privacy()

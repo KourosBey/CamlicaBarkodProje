@@ -13,6 +13,9 @@ namespace BusinessLayer.Concrete
 
     {
         ICustomerDal _jobDal;
+
+        
+
         public CustomerManager(ICustomerDal
             jobDal)
         {

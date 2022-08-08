@@ -98,7 +98,7 @@
                                 @Html.DisplayFor(modelItem => item.LogCall!.Customer!.CustomerName)
                             </td>
                             <td>
-                                  <a href="/Job/Delete/@item.JobID" id='deleteRecord' class="btn btn-primary"  >X</a>
+                                  <a href="/Job/Delete/@item.JobID"  id='deleteRecord' class="btn btn-primary"  >X</a>
                             </td>
                         </tr>
                     }
@@ -128,17 +128,17 @@
                 <form asp-action="JobAdd" asp-controller="Job" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label name="JobDescription" class="control-label"></label>
+                        <label name="JobDescription" class="control-label">İş Açıklaması</label>
                         <input name="JobDescription" class="form-control" />
 
                     </div>
                     <div class="form-group">
-                        <label name="Solution" class="control-label"></label>
+                        <label name="Solution" class="control-label">Çözüm</label>
                         <input name="Solution" class="form-control" />
 
                     </div>
                     <div class="form-group">
-                        <label name="CurrentStatus" class="control-label"></label>
+                        <label name="CurrentStatus" class="control-label">Güncel Durum</label>
                         <input name="CurrentStatus" class="form-control" />
 
                     </div>
@@ -158,13 +158,12 @@
 
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <button type="submit" id="createJob" value="Create" class="btn btn-primary" >Kayıt Et</button>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            
             </div>
         </div>
     </div>
@@ -189,17 +188,17 @@
                     <input id="JobID" style="display:none" type="text" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label name="JobDescription" class="control-label"></label>
+                        <label name="JobDescription" class="control-label">İş Açıklaması</label>
                         <input id="JobDescription" name="JobDescription" class="form-control" />
 
                     </div>
                     <div class="form-group">
-                        <label name="Solution" class="control-label"></label>
+                        <label name="Solution" class="control-label">Çözüm</label>
                         <input id="Solution" name="Solution" class="form-control" />
 
                     </div>
                     <div class="form-group">
-                        <label name="CurrentStatus" class="control-label"></label>
+                        <label name="CurrentStatus" class="control-label">Güncel Durum</label>
                         <input id="CurrentStatus" name="CurrentStatus" class="form-control" />
 
                     </div>
@@ -290,7 +289,7 @@
 
 
 
-                        console.log($("#JobID").val)
+                        console.log($("#JobID").val);
                         console.log(func);
                     }
                 })
@@ -317,12 +316,13 @@
                 Solution: $("#Solution").val(),
                 CurrentStatus: $("#CurrentStatus").val(),
             };
+
             $.ajax({
                 type: "Post",
                 url: 'Job/SaveJsonJob/',
                 data: newJob,
                 success: function(funk) {
-                    alert("Güncellemeyi senin için yaptım")
+                    alert("Güncellemeyi senin için yaptım");
                 }
             });
         }) // Update Doubleclick Job
@@ -341,4 +341,7 @@
 
 
 </script>
+<script>
 
+
+</script>

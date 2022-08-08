@@ -39,34 +39,23 @@ namespace CamlicaBarkodProje.Controllers
         [HttpGet]
 
         public ActionResult Index( Job jobGet)
-
-
-
-
         {
-
             List<SelectListItem> LogCalltoJob = (from x in lcm.GetList().Where(x => x.IsJob == false)
                                                  select new SelectListItem
                                                  {
                                                      Text = x.CallInfo,
                                                      Value = x.LogCallID.ToString()
                                                  }).ToList();
-
             ViewBag.cv = LogCalltoJob;
-
             if (jobGet.LogCallID==0)
             {
                 var valuez = jm.JobInclude();
-
                 return View(valuez);
-
             }
            // Logcall çekilmesi ve bunun aktarılması gerekiyor araştır. Viewbag - Tempdata - viewdata kontrol et
-            IEnumerable<Job> values;
-            
+            IEnumerable<Job> values; 
             if (jobGet.JobID !=0 && jm.GetById(jobGet.JobID)!= null )
-            {
-                
+            {               
                 values = jm.GetList().Where(x => x.JobID == jobGet.JobID || x.LogCallID == jobGet.LogCallID || jobGet.Emergency==x.Emergency  );
                 if (values != null)
                 {
@@ -74,11 +63,9 @@ namespace CamlicaBarkodProje.Controllers
                     ViewBag.sv = values;
                     model.Jobs = values;
                 }
-            }
-           
+            }           
             else
-            {
-             
+            {             
                     JobLogcall model = new JobLogcall();
                     values = jm.GetList();
                 if (values == null) { 
@@ -87,9 +74,7 @@ namespace CamlicaBarkodProje.Controllers
                     }
                 
             }
-
             return View(values);
-
         }
         [Authorize(Roles = "Yönetici,Personel")]
         [HttpPost]
@@ -102,6 +87,8 @@ namespace CamlicaBarkodProje.Controllers
 
 
         }
+
+     
          public IActionResult SaveJsonJob ( Job job)
         {
             var newJob = jm.GetById(job.JobID); 
@@ -219,14 +206,14 @@ namespace CamlicaBarkodProje.Controllers
 
            
         }
-
+        [Authorize(Roles = "Yönetici,Personel")]
         public IActionResult GetJsonData()
         {
             var jsonJobData = JsonConvert.SerializeObject(jm.GetList());
 
             return Json(jsonJobData);
         }
-      
+        [Authorize(Roles = "Yönetici,Personel")]
         public IActionResult GetByIDJsonJob(int id)
         {
             var getJsonID = JsonConvert.SerializeObject(jm.GetById(id));

@@ -11,7 +11,6 @@ namespace EntityLayer.Concrete
     {
         [Key]
         public int AuthrorityID   { get; set; }
-    
         public String? AuthorityName  { get; set; }
 
     }
